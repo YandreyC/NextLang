@@ -1,13 +1,13 @@
 /**
- * WebOS Core Module: Traductor Inteligente (Hover & Tooltip)
- * Escanea el texto, identifica palabras clave en inglés y renderiza el tooltip flotante.
+ * NextLang OS Core Module: Traductor Inteligente (Hover & Tooltip)
+ * Versión Corregida con Auto-Inicialización y Limpieza Estricta de Tokens
  */
 
 const OSTranslator = {
-    enabled: true, // Controlado dinámicamente por la app Settings
+    enabled: true, 
     tooltip: null,
 
-    // Diccionario básico de traducción técnica (Inglés -> Español)
+    // Diccionario centralizado de traducción (Inglés -> Español)
     dictionary: {
         "welcome": "Bienvenido",
         "system": "Sistema",
@@ -17,7 +17,7 @@ const OSTranslator = {
         "built": "Construido",
         "entirely": "Completamente / En su totalidad",
         "elegant": "Elegante",
-        "glassmorphism": "Glesmorfismo (Efecto Vidrio)",
+        "glassmorphism": "Glassmorphism (Efecto Vidrio)",
         "user": "Usuario",
         "interface": "Interfaz",
         "main": "Principal",
@@ -33,97 +33,81 @@ const OSTranslator = {
         "window": "Ventana",
         "smart": "Inteligente",
         "immediately": "Inmediatamente",
-        "show": "Mostrará / Exhibirá",
+        "show": "Mostrar",
         "file": "Archivo",
-        "settings": "Configuración / Ajustes",
-        "press": "Presionar / Pulsar",
-        "shutdown": "Apagar / Apagado",
-        "button": "Botón",
-        "start": "Inicio",
-        "menu": "Menú",
-        "close": "Cerrar",
-        "safely": "De forma segura",
-        "management": "Gestión / Administración",
-        "virtual": "Virtual",
-        "automatic": "Automática",
-        "requirements": "Requisitos",
-        "modern": "Moderno",
-        "browser": "Navegador",
-        "curiosity": "Curiosidad",
-        "status": "Estado",
-        "running": "En ejecución / Corriendo",
-        "memory": "Memoria",
-        "allocation": "Asignación / Reserva",
-        "stable": "Estable",
-        "nominal": "Nominal / Dentro de lo normal",
-        "security": "Seguridad",
-        "active": "Activo",
-        "unauthorized": "No autorizado",
-        "access": "Acceso",
-        "detected": "Detectado"
+        "settings": "Configuración / Ajustes"
     },
 
     /**
-     * Inicializa el contenedor del Tooltip en el documento
+     * Inicializa el módulo enlazando o creando el elemento del tooltip en el DOM
      */
     init() {
-        if (document.getElementById('os-tooltip')) return;
-
-        // Crear el elemento HTML del tooltip global
-        this.tooltip = document.createElement('div');
-        this.tooltip.id = 'os-tooltip';
-        this.tooltip.className = 'os-translator-tooltip';
-        document.body.appendChild(this.tooltip);
+        // Intentamos buscar si ya existe en el HTML
+        this.tooltip = document.getElementById('os-translator-tooltip');
+        
+        // Si no existe en el index.html, lo inyectamos dinámicamente en el body
+        if (!this.tooltip) {
+            this.tooltip = document.createElement('div');
+            this.tooltip.id = 'os-translator-tooltip';
+            document.body.appendChild(this.tooltip);
+        }
+        console.log("Módulo OSTranslator acoplado y listo.");
     },
 
     /**
-     * Toma un contenedor HTML (como el cuerpo de una ventana), analiza su texto
-     * y envuelve las palabras conocidas en un <span> interactivo.
-     * @param {HTMLElement} containerEl - El elemento de la ventana a escanear
+     * Escanea un contenedor, procesa los nodos de texto y aísla las palabras traducibles
      */
-    tokenizeContent(containerEl) {
-        if (!containerEl) return;
-        this.init(); // Asegurar que el tooltip exista
-
-        // Usamos un TreeWalker para modificar solo los nodos de texto sin romper etiquetas HTML internas (como <strong> o <br>)
-        const walker = document.createTreeWalker(containerEl, NodeFilter.SHOW_TEXT, null, false);
-        const textNodes = [];
-
-        while (walker.nextNode()) {
-            textNodes.push(walker.currentNode);
+    run(container) {
+        if (!container) return;
+        
+        // Aseguramos que el tooltip esté listo antes de procesar eventos
+        if (!this.tooltip) {
+            this.init();
         }
 
-        // Procesar cada nodo de texto encontrado
-        textNodes.forEach(node => {
-            const originalText = node.nodeValue;
-            
-            // Expresión regular para separar el texto por palabras manteniendo signos de puntuación
-            const words = originalText.split(/(\b[a-zA-Z]+\b)/g);
-            
-            let hasChange = false;
-            const fragment = document.createDocumentFragment();
+        const walker = document.createTreeWalker(
+            container,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
 
-            words.forEach(part => {
-                const lowerWord = part.toLowerCase();
-                
-                // Si la palabra está en nuestro diccionario, la convertimos en un elemento interactivo
-                if (this.dictionary[lowerWord]) {
+        const nodesToProcess = [];
+        while (walker.nextNode()) {
+            // Evitamos procesar texto que ya esté dentro de elementos de control o scripts
+            if (walker.currentNode.parentNode.tagName !== 'SCRIPT' && 
+                walker.currentNode.parentNode.tagName !== 'STYLE' &&
+                !walker.currentNode.parentNode.classList.contains('translatable-word')) {
+                nodesToProcess.push(walker.currentNode);
+            }
+        }
+
+        nodesToProcess.forEach(node => {
+            const text = node.nodeValue;
+            // Separamos por palabras manteniendo los espacios y saltos de línea
+            const parts = text.split(/(\s+)/);
+            const fragment = document.createDocumentFragment();
+            let hasChange = false;
+
+            parts.forEach(part => {
+                // Limpieza estricta: removemos cualquier signo de puntuación común
+                const cleanWord = part.toLowerCase().trim().replace(/[^a-z]/g, "");
+
+                if (cleanWord && this.dictionary[cleanWord]) {
                     const span = document.createElement('span');
-                    span.className = 'palabra-traducible';
-                    span.innerText = part;
+                    span.className = 'translatable-word';
+                    span.textContent = part;
                     
-                    // Asignamos el evento hover directamente a este token
-                    this.bindHoverEvents(span, lowerWord);
+                    // Vinculamos los eventos del mouse directamente al nuevo elemento
+                    this.bindHoverEvents(span, cleanWord);
                     
                     fragment.appendChild(span);
                     hasChange = true;
                 } else {
-                    // Si no es una palabra traducible, se deja como texto plano
                     fragment.appendChild(document.createTextNode(part));
                 }
             });
 
-            // Si se encontraron palabras traducibles en este nodo, lo reemplazamos en el DOM
             if (hasChange && node.parentNode) {
                 node.parentNode.replaceChild(fragment, node);
             }
@@ -138,14 +122,14 @@ const OSTranslator = {
             if (!this.enabled || !this.tooltip) return;
 
             const translation = this.dictionary[cleanWord];
-            this.tooltip.innerHTML = `<strong style="color: #a855f7;">${cleanWord}</strong>: ${translation}`;
+            this.tooltip.innerHTML = `<strong style="color: #a855f7;">${cleanWord.toUpperCase()}</strong>: ${translation}`;
             this.tooltip.style.display = 'block';
         };
 
         element.onmousemove = (e) => {
             if (!this.enabled || !this.tooltip) return;
 
-            // Posiciona el tooltip ligeramente arriba y a la derecha del cursor del mouse
+            // Posicionamiento fixed reactivo al viewport del navegador (Evita desfases de scrolls)
             this.tooltip.style.left = `${e.clientX + 15}px`;
             this.tooltip.style.top = `${e.clientY - 35}px`;
         };
@@ -157,6 +141,3 @@ const OSTranslator = {
         };
     }
 };
-
-// Registrar el módulo globalmente
-window.OSTranslator = OSTranslator;

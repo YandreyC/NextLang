@@ -1,5 +1,5 @@
 /* ==========================================================================
-   VENTANAS GLASSMORPHISM (Estilo de Vidrio Flotante)
+   VENTANAS GLASSMORPHISM (Estilo de Vidrio Flotante Premium)
    ========================================================================== */
 .window {
     position: absolute;
@@ -8,9 +8,9 @@
     width: 500px;
     height: 350px;
     background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(25px); /* Efecto vidrio borroso */
+    backdrop-filter: blur(25px); /* Efecto vidrio borroso de alta definición */
     -webkit-backdrop-filter: blur(25px);
-    border-radius: 20px; /* Bordes muy suaves */
+    border-radius: 20px; /* Bordes muy suaves y orgánicos */
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     display: flex;
@@ -24,13 +24,15 @@
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
+/* Estado maximizado adaptado al espacio de trabajo */
 .window.maximized {
     border-radius: 0;
     backdrop-filter: blur(35px);
     background: rgba(15, 17, 26, 0.9); /* Más oscura al maximizarse para concentrar la vista */
+    box-shadow: none;
 }
 
-/* Barra superior de la ventana */
+/* Barra superior de la ventana (Cabecera de arrastre) */
 .window-header {
     height: 45px;
     padding: 0 20px;
@@ -49,7 +51,7 @@
     letter-spacing: 0.3px;
 }
 
-/* Controles de Ventana Tipo Puntos Orgánicos */
+/* Controles de Ventana Tipo Puntos Orgánicos / Estilo Gema */
 .window-controls {
     display: flex;
     gap: 8px;
@@ -63,9 +65,12 @@
     font-size: 0; /* Oculta el texto interno original (_ [] X) */
     cursor: pointer;
     transition: transform 0.2s, filter 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Colores personalizados para cada botón de control */
+/* Colores personalizados de la identidad visual para cada botón de control */
 .window-controls .btn-minimize { background-color: #ffbd2e; }
 .window-controls .btn-maximize { background-color: #27c93f; }
 .window-controls .btn-close { background-color: #ff5f56; }
@@ -75,7 +80,7 @@
     filter: brightness(1.2);
 }
 
-/* Cuerpo de la ventana (Área de la aplicación) */
+/* Cuerpo de la ventana (Área interna de la aplicación) */
 .window-body {
     flex: 1;
     overflow: auto;
@@ -84,9 +89,10 @@
     padding: 20px;
     font-size: 14px;
     line-height: 1.6;
+    position: relative;
 }
 
-/* Custom Scrollbar elegante para las aplicaciones */
+/* Custom Scrollbar elegante para mantener la estética limpia */
 .window-body::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -103,39 +109,45 @@
 }
 
 /* ==========================================================================
-   ILUMINACIÓN DE TRADUCCIÓN (Hover & Tooltip Neon)
+   ILUMINACIÓN DE TRADUCCIÓN (Hover & Tooltip Neon) - ENLACE CON TRASLATOR.JS
    ========================================================================== */
 
-.palabra-traducible {
-    display: inline-block;
+/* Cada palabra tokenizada por JS tendrá esta clase */
+.translatable-word {
+    display: inline-block !important;
     transition: all 0.2s ease;
-    cursor: help;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); /* Sutil indicador inferior */
+    cursor: help !important;
+    border-bottom: 1px dashed rgba(168, 85, 247, 0.6) !important; /* Indicador inferior sutil violeta */
 }
 
-.palabra-traducible:hover {
-    background-color: rgba(168, 85, 247, 0.15); /* Brillo violeta sutil */
-    color: #d946ef; /* Cambio de color de la palabra al pasar el cursor */
-    border-bottom-color: #d946ef;
+/* Efecto reactivo neón cuando pasas el cursor */
+.translatable-word:hover {
+    background-color: rgba(168, 85, 247, 0.15) !important; /* Brillo violeta de fondo */
+    color: #d946ef !important; /* Cambio a rosa neón en el texto */
+    border-bottom-color: #d946ef !important;
     transform: translateY(-1px);
+    border-radius: 4px;
+    padding: 0 2px;
 }
 
-/* Tooltip Inteligente */
-.os-translator-tooltip {
-    position: absolute;
+/* Tooltip Inteligente Flotante Global (ID mapeado con JS) */
+#os-translator-tooltip {
+    position: fixed !important; /* Previene bugs con el scroll interno de las ventanas */
     display: none;
-    background: rgba(15, 17, 26, 0.85);
-    backdrop-filter: blur(12px);
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
-    border: 1px solid rgba(168, 85, 247, 0.3); /* Borde con tonalidad neón */
-    animation: floatIn 0.2s ease-out;
+    background: rgba(15, 17, 26, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    color: #ffffff !important;
+    padding: 8px 16px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    pointer-events: none !important; /* Evita parpadeos cíclicos */
+    border: 1px solid rgba(168, 85, 247, 0.4) !important; /* Borde con tonalidad neón */
+    z-index: 999999 !important; /* Capa máxima absoluta por encima de los vidrios */
+    animation: floatIn 0.15s ease-out;
 }
 
 @keyframes floatIn {

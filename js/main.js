@@ -11,6 +11,11 @@ const OSMain = {
         this.initStartMenu();
         this.initDesktopIcons();
         
+        // ¡INTEGRACIÓN!: Inicializar el módulo del traductor y procesar elementos estáticos
+        if (window.OSTranslator) {
+            window.OSTranslator.init();
+        }
+
         // Disparador del sistema de usuarios y pantalla de bloqueo al arrancar
         if (window.OSUsers) {
             window.OSUsers.renderLoginScreen();
@@ -120,6 +125,10 @@ const OSMain = {
                 if (window.AppTerminal) window.AppTerminal.open();
                 break;
 
+            case 'browser':
+                if (window.AppBrowser) window.AppBrowser.open();
+                break;
+
             default:
                 console.warn(`Proceso denegado por el Kernel. Aplicación no registrada: ${appName}`);
         }
@@ -156,7 +165,7 @@ const OSMain = {
                         background: rgba(255,255,255,0.03); 
                         color: #fff; 
                         border: 1px solid rgba(255,255,255,0.1); 
-                        padding: 10px 24px; 
+                        padding: 10px 24px; \
                         cursor: pointer; 
                         border-radius: 12px;
                         font-family: inherit;

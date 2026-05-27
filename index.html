@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextLang OS - Futuristic Environment</title>
+    <title>NextLang</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/windows.css">
 </head>
@@ -24,14 +24,14 @@
                 <div class="icon-wrapper">
                     <svg viewBox="0 0 24 24" class="sys-icon"><path fill="#d946ef" d="M7,2H17A2,2 0 0 1 19,4V20A2,2 0 0 1 17,22H7A2,2 0 0 1 5,20V4A2,2 0 0 1 7,2H7M7,4V6H9V4H7M11,4V6H13V4H11M15,4V6H17V4H15M7,8V10H9V8H7M11,8V10H13V8H11M15,8V10H17V8H15M7,12V14H9V12H7M11,12V14H13V12H11M15,12V16H17V12H15M7,16V20H13V16H7Z"/></svg>
                 </div>
-                <span class="icon-label">Calculadora</span>
+                <span class="icon-label">Calculator</span>
             </div>
 
             <div class="desktop-icon" data-app="explorer">
                 <div class="icon-wrapper">
                     <svg viewBox="0 0 24 24" class="sys-icon"><path fill="#a855f7" d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0 0 4,20H20A2,2 0 0 0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/></svg>
                 </div>
-                <span class="icon-label">Archivos</span>
+                <span class="icon-label">Files</span>
             </div>
 
             <div class="desktop-icon" data-app="terminal">
@@ -48,6 +48,13 @@
                 <span class="icon-label">Monitor</span>
             </div>
 
+            <div class="desktop-icon" data-app="browser">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" class="sys-icon"><path fill="#38bdf8" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12C4,15.11 5.78,17.81 8.39,19.16L11.5,13.78C10.6,13.43 10,12.54 10,11.5A2,2 0 0 1 12,9.5C12.8,9.5 13.5,10 13.84,10.68L17.74,7.44C16.37,5.33 14.05,4 12,4M19.93,11A8,8 0 0,0 12,4.07V7.5C13,7.5 13.9,8 14.44,8.77L11.5,13.87C11.66,13.95 11.83,14 12,14A2,2 0 0 1 14,12C14,11.23 13.57,10.57 12.93,10.23L16.41,4.2C18.6,5.55 20,11 19.93,11Z"/></svg>
+                </div>
+                <span class="icon-label">Browser</span>
+            </div>
+
         </main>
 
         <div id="start-menu" class="hidden">
@@ -59,11 +66,11 @@
                 </div>
             </div>
             <div class="start-menu-links">
-                <div class="menu-item" data-app="settings">⚙️ Configuración</div>
-                <div class="menu-item" data-app="taskmanager">📊 Monitor del Sistema</div>
-                <div class="menu-item" data-app="terminal">📟 Terminal de Comandos</div>
-                <div class="menu-item" data-app="explorer">📁 Explorador de Archivos</div>
-                <div class="menu-item shutdown">⚠️ Apagar Equipo</div>
+                <div class="menu-item" data-app="settings">⚙️ Settings</div>
+                <div class="menu-item" data-app="taskmanager">📊 System Monitor</div>
+                <div class="menu-item" data-app="terminal">📟 Command Prompt</div>
+                <div class="menu-item" data-app="explorer">📁 File Explorer</div>
+                <div class="menu-item shutdown">⚠️ Shut Down Computer</div>
             </div>
         </div>
 
@@ -91,7 +98,10 @@
     <script src="js/apps/settings.js"></script>
     <script src="js/apps/taskmanager.js"></script>
     <script src="js/apps/terminal.js"></script>
-    <script src="js/apps/users.js"></script> <script src="js/main.js"></script>
+    <script src="js/apps/users.js"></script>
+    <script src="js/apps/browser.js"></script>
+
+    <script src="js/main.js"></script>
 
 </body>
 </html>
