@@ -1,0 +1,279 @@
+/* ==========================================================================
+   RESET & ESTÉTICA FUTURISTA VANGUARDISTA
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    outline: none;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #0d0e15;
+}
+
+#os-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* Fondo abstracto premium generado por CSS */
+    background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(217, 70, 239, 0.15) 0%, transparent 50%),
+                linear-gradient(160deg, #0f111a 0%, #07080d 100%);
+    background-size: cover;
+}
+
+/* ==========================================================================
+   EL ESCRITORIO (Espacio orgánico)
+   ========================================================================== */
+#desktop {
+    flex: 1;
+    position: relative;
+    padding: 40px;
+    display: flex;
+    flex-direction: row; /* Iconos en horizontal superior de forma fluida */
+    justify-content: center; /* Centra los iconos principales */
+    gap: 30px;
+}
+
+/* Iconos Flotantes */
+.desktop-icon {
+    width: 90px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 16px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desktop-icon:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+}
+
+.icon-wrapper {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    transition: transform 0.3s;
+}
+
+.desktop-icon:hover .icon-wrapper {
+    transform: rotate(5deg);
+}
+
+.sys-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.icon-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   EL DOCK (Barra de tareas flotante estilo Isla Activa)
+   ========================================================================== */
+#taskbar {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%); /* Lo centra perfectamente abajo */
+    height: 54px;
+    min-width: 400px;
+    background: rgba(13, 14, 21, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 27px; /* Completamente ovalado */
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    z-index: 99999;
+}
+
+/* Botón Central de Comando (Antiguo Inicio) */
+#start-button {
+    height: 38px;
+    width: 38px; /* Circular */
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    transition: all 0.3s;
+}
+
+#start-button:hover {
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+}
+
+#start-button span {
+    display: none; /* Ocultamos el texto "Inicio", dejamos solo el icono */
+}
+
+.start-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Contenedor de Apps en el Dock */
+#active-apps {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.taskbar-item {
+    height: 36px;
+    padding: 0 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.taskbar-item:hover, .taskbar-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(168, 85, 247, 0.4);
+    transform: translateY(-4px);
+}
+
+.taskbar-item.active {
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.2);
+}
+
+/* Reloj Minimalista */
+#system-tray {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   PANEL DE CONTROL CENTRAL (Antiguo Menú de Inicio)
+   ========================================================================== */
+#start-menu {
+    position: absolute;
+    bottom: 95px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0); /* Despliega centrado sobre el Dock */
+    width: 450px;
+    height: 280px;
+    background: rgba(15, 17, 26, 0.75);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    overflow: hidden;
+    z-index: 99998;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+#start-menu.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(40px) scale(0.95);
+    pointer-events: none;
+}
+
+.start-menu-sidebar {
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #6366f1, #d946ef);
+    border-radius: 12px;
+}
+
+.start-menu-links {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.menu-item {
+    padding: 12px 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.menu-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #fff;
+    border-color: rgba(99, 102, 241, 0.2);
+    transform: translateX(5px);
+}
+
+.menu-item.shutdown {
+    margin-top: 15px;
+    background: rgba(239, 68, 68, 0.05);
+    color: #ef4444;
+}
+
+.menu-item.shutdown:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+hr { display: none; } /* Eliminado por estética */
