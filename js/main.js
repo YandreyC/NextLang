@@ -237,7 +237,8 @@ const OSMain = {
             'taskmanager': window.AppTaskManager,
             'terminal': window.AppTerminal,
             'browser': window.AppBrowser,
-            'duolingo': window.AppDuolingo
+            'duolingo': window.AppDuolingo,
+            'speechling': window.AppSpeechling // <-- REGISTRADO CON ÉXITO AQUÍ
         };
 
         if (appMap[appName] && typeof appMap[appName].open === 'function') {
@@ -276,3 +277,18 @@ const OSMain = {
 document.addEventListener('DOMContentLoaded', () => {
     OSMain.init();
 });
+
+
+/**
+ * NextLang OS App: Speechling Launcher Module
+ * Lanza la plataforma oficial de Speechling de forma segura en una pestaña externa
+ */
+window.AppSpeechling = {
+    open() {
+        const url = 'https://speechling.com/es/'; 
+        
+        console.log("Kernel: Redirigiendo proceso 'speechling' a una pasarela externa segura...");
+        
+        window.open(url, '_blank');
+    }
+};
