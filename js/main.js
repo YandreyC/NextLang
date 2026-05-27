@@ -115,10 +115,33 @@ const OSMain = {
         const closeBtn = document.getElementById('close-shutdown-modal');
         const btnRestart = document.getElementById('btn-restart');
         const btnShutdown = document.getElementById('btn-shutdown');
+        const btnSwitchUser = document.getElementById('btn-switch-user');
 
         if (closeBtn) closeBtn.onclick = () => this.hideShutdownModal();
         if (btnRestart) btnRestart.onclick = () => window.location.reload();
         if (btnShutdown) btnShutdown.onclick = () => this.shutdownSystem();
+
+        // Switch user: vuelve al login sin recargar la página
+        if (btnSwitchUser) {
+            btnSwitchUser.onclick = () => {
+                this.hideShutdownModal();
+                if (window.OSUsers) {
+                    window.OSUsers.currentUser = null;
+                    // Cierra todas las ventanas abiertas al cambiar de usuario
+                    if (window.OSKernel) {
+                        window.OSKernel.activeWindows.forEach((winData, winId) => {
+                            try {
+                                winData.element.remove();
+                            } catch (e) {}
+                        });
+                        window.OSKernel.activeWindows.clear();
+                        window.OSKernel.updateTaskbar();
+                    }
+                    window.OSUsers.renderLoginScreen();
+                }
+
+            };
+        }
     },
 
     showShutdownModal() {
