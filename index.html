@@ -67,6 +67,11 @@
                 </div>
                 <span class="icon-label os-hover-translate-ignore">Browser</span>
             </div>
+
+            <div class="desktop-icon" data-app="duolingo">
+                <div class="icon-avatar" style="font-size: 32px; filter: drop-shadow(0 0 5px rgba(88,204,2,0.5));">🦉</div>
+                <span class="icon-label">Duolingo</span>
+            </div>
         </main>
 
         <div id="start-menu" class="hidden">
@@ -105,9 +110,9 @@
             </div>
             <p class="shutdown-modal-body">What would you like the system to do?</p>
             <div class="shutdown-modal-actions">
-                <button id="btn-restart" class="action-btn restart-btn">🔄 Restart</button>
-                <button id="btn-shutdown" class="action-btn shutdown-btn">❌ Shut Down</button>
-                <button id="btn-switch-user" class="action-btn switch-btn">👤 Switch User</button>
+                <button id="btn-restart" class="action-btn restart-btn">Restart</button>
+                <button id="btn-shutdown" class="action-btn shutdown-btn">Shut Down</button>
+                <button id="btn-switch-user" class="action-btn switch-btn">Switch User</button>
             </div>
         </div>
     </div>
@@ -123,6 +128,7 @@
     <script src="js/apps/terminal.js"></script>
     <script src="js/apps/users.js"></script>
     <script src="js/apps/browser.js"></script>
+    <script src="js/apps/duolingo-app.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

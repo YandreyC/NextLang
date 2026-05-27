@@ -42,7 +42,7 @@ const OSTranslator = {
         "documents": "Documentos",
         "pictures": "Imágenes / Fotos",
 
-        // Nuevas entradas para hover en íconos / menú / dock
+        // Entradas para hover en íconos / menú / dock
         "notepad": "Bloc de notas",
         "calculator": "Calculadora",
         "files": "Archivos",
@@ -58,9 +58,22 @@ const OSTranslator = {
         "computer": "Computadora",
         "shutdown": "Apagar",
         "shut down": "Apagar",
+        "Shut Down": "Apagar",
         "computer shut down": "Apagar computadora",
         "settings menu": "Menú de configuración",
-        "active apps": "Aplicaciones activas"
+        "active apps": "Aplicaciones activas",
+
+        // NUEVO: Entradas añadidas para el recuadro modal de opciones de apagado
+        "options": "Opciones",
+        "what": "Qué",
+        "would": "Desearía",
+        "you": "Usted / Tú",
+        "like": "Gustaría",
+        "the": "El / La",
+        "to": "Que / Para",
+        "do": "Haga / Hacer",
+        "restart": "Reiniciar",
+        "switch": "Cambiar / Cambiar de"
     },
 
     /**
@@ -117,7 +130,7 @@ const OSTranslator = {
     },
 
     /**
-     * FUNCIÓN CRITICA DE REPARACIÓN: Mapea la llamada del Kernel hacia el motor de renderizado
+     * FUNCIÓN CRÍTICA DE REPARACIÓN: Mapea la llamada del Kernel hacia el motor de renderizado
      * @param {HTMLElement} container - Nodo raíz de la ventana a escanear
      */
     translateContainerText(container) {

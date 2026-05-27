@@ -1,23 +1,16 @@
+/**
+ * NextLang OS App: Duolingo Launcher Module
+ * Lanza la plataforma oficial de Duolingo de forma segura en una pestaña externa
+ */
 window.AppDuolingo = {
     open() {
-        const id = 'duolingo';
-        // URL de Duolingo
-        const url = 'https://www.duolingo.com'; 
+        // URL directa a la sección de aprendizaje de Duolingo
+        const url = 'https://www.duolingo.com/learn'; 
         
-        const content = `
-            <div class="native-app-container">
-                <iframe src="${url}" 
-                        id="iframe-duolingo"
-                        style="width:100%; height:100%; border:none;">
-                </iframe>
-            </div>
-        `;
-        
-        window.OSKernel.createWindow(id, 'Duolingo - Aprende Idiomas', content);
-        
-        // Estilo especial para cuando se abre
-        const win = document.getElementById(`win-${id}`);
-        win.style.width = '900px';
-        win.style.height = '600px';
+        // Registro en la consola simulando el comportamiento de Kernel
+        console.log("Kernel: Redirigiendo proceso 'duolingo' a una pasarela externa segura...");
+
+        // Abre Duolingo directamente en una nueva pestaña del navegador
+        window.open(url, '_blank');
     }
 };

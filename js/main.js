@@ -10,7 +10,7 @@ const OSMain = {
     init() {
         this.initClock();
         this.initStartMenu();
-        this.initDesktopIcons();
+        this.initDesktopIcons(); // Inicializado con delegación segura de eventos
         this.initShutdownModal(); // Inicializa los listeners del nuevo recuadro
         
         // INTEGRACIÓN DE TRADUCCIÓN
@@ -125,7 +125,6 @@ const OSMain = {
             item.addEventListener('click', (e) => {
                 const appName = item.getAttribute('data-app');
                 
-                // Si presionan Apagar, abrimos el recuadro modal en vez de apagar de inmediato
                 if (appName === 'shutdown' || item.classList.contains('shutdown')) {
                     this.showShutdownModal();
                 } else if (appName) {
@@ -142,55 +141,65 @@ const OSMain = {
      */
     initShutdownModal() {
         const modal = document.getElementById('shutdown-modal');
+        if (!modal) return;
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) this.hideShutdownModal();
+        });
+
+        if (window.OSTranslator) {
+            window.OSTranslator.translateContainerText(modal);
+        }
+
+        this.bindShutdownModalEvents();
+    },
+
+    /**
+     * Enlaza los clics a los botones del modal de apagado de forma segura
+     */
+    bindShutdownModalEvents() {
         const closeBtn = document.getElementById('close-shutdown-modal');
         const btnRestart = document.getElementById('btn-restart');
         const btnShutdown = document.getElementById('btn-shutdown');
         const btnSwitchUser = document.getElementById('btn-switch-user');
 
-        if (!modal) return;
+        if (closeBtn) closeBtn.onclick = () => this.hideShutdownModal();
 
-        // Cerrar modal al darle a la X
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.hideShutdownModal());
-        }
-
-        // Cerrar modal si hacen click fuera del recuadro
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) this.hideShutdownModal();
-        });
-
-        // Opción 1: Restart (Simula un reinicio del sistema completo refrescando hilos)
         if (btnRestart) {
-            btnRestart.addEventListener('click', () => {
+            btnRestart.onclick = () => {
                 this.hideShutdownModal();
                 window.location.reload();
-            });
+            };
         }
 
-        // Opción 2: Apagar (Llama a la animación cinematográfica)
         if (btnShutdown) {
-            btnShutdown.addEventListener('click', () => {
+            btnShutdown.onclick = () => {
                 this.hideShutdownModal();
                 this.shutdownSystem();
-            });
+            };
         }
 
-        // Opción 3: Cambio de usuario (Regresa a la pantalla de Login del módulo users.js)
         if (btnSwitchUser) {
-            btnSwitchUser.addEventListener('click', () => {
+            btnSwitchUser.onclick = () => {
                 this.hideShutdownModal();
                 if (window.OSUsers && typeof window.OSUsers.renderLoginScreen === 'function') {
                     window.OSUsers.renderLoginScreen();
                 } else {
                     console.warn("Módulo de usuarios (OSUsers) no disponible.");
                 }
-            });
+            };
         }
     },
 
     showShutdownModal() {
         const modal = document.getElementById('shutdown-modal');
-        if (modal) modal.classList.remove('hidden');
+        if (modal) {
+            modal.classList.remove('hidden');
+            if (window.OSTranslator) {
+                window.OSTranslator.translateContainerText(modal);
+            }
+            this.bindShutdownModalEvents();
+        }
     },
 
     hideShutdownModal() {
@@ -199,15 +208,20 @@ const OSMain = {
     },
 
     /**
-     * Manejador de iconos del escritorio
+     * Manejador de iconos del escritorio optimizado con Delegación de Eventos
+     * Resiste las mutaciones de código hechas por el traductor dinámico.
      */
     initDesktopIcons() {
-        const icons = document.querySelectorAll('.desktop-icon');
-        icons.forEach(icon => {
-            icon.addEventListener('dblclick', () => {
+        const desktop = document.getElementById('desktop');
+        if (!desktop) return;
+
+        desktop.addEventListener('dblclick', (e) => {
+            // Busca el contenedor '.desktop-icon' más cercano hacia arriba desde donde se hizo clic
+            const icon = e.target.closest('.desktop-icon');
+            if (icon) {
                 const appName = icon.getAttribute('data-app');
                 if (appName) this.launchApp(appName);
-            });
+            }
         });
     },
 
@@ -222,7 +236,8 @@ const OSMain = {
             'settings': window.AppSettings,
             'taskmanager': window.AppTaskManager,
             'terminal': window.AppTerminal,
-            'browser': window.AppBrowser
+            'browser': window.AppBrowser,
+            'duolingo': window.AppDuolingo
         };
 
         if (appMap[appName] && typeof appMap[appName].open === 'function') {
