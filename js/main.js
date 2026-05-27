@@ -1,6 +1,6 @@
 /**
  * NextLang OS Main - Orquestador de Arranque e Interfaz Global
- * Versión optimizada para persistencia de traducción dinámica con animación de inicio y apagado
+ * Versión optimizada para persistencia de traducción dinámica con cuadro modal de apagado
  */
 
 const OSMain = {
@@ -11,13 +11,11 @@ const OSMain = {
         this.initClock();
         this.initStartMenu();
         this.initDesktopIcons();
+        this.initShutdownModal(); // Inicializa los listeners del nuevo recuadro
         
         // INTEGRACIÓN DE TRADUCCIÓN
         if (window.OSTranslator) {
-            // Traducción inicial de toda la UI cargada en el DOM
             window.OSTranslator.init();
-            
-            // Forzamos traducción del Menú de Inicio tras la carga
             const startMenu = document.getElementById('start-menu');
             if (startMenu) window.OSTranslator.translateContainerText(startMenu);
         }
@@ -42,7 +40,6 @@ const OSMain = {
 
         if (!bootScreen || !progressFill || !logsContainer) return;
 
-        // Cola de logs del sistema para simular la terminal
         const bootLogs = [
             { text: "Loading NextLang WebOS Core Components...", type: "info" },
             { text: "Initializing Virtual Kernel & VFS System... OK", type: "success" },
@@ -56,11 +53,10 @@ const OSMain = {
         let progress = 0;
 
         const bootInterval = setInterval(() => {
-            progress += 2; // Incremento progresivo de la barra de carga
+            progress += 2;
             if (progress > 100) progress = 100;
             progressFill.style.width = `${progress}%`;
 
-            // Control de tiempos de impresión de logs según el porcentaje actual
             if (currentLogIndex < bootLogs.length && progress >= (currentLogIndex + 1) * (100 / bootLogs.length)) {
                 const logData = bootLogs[currentLogIndex];
                 const line = document.createElement('div');
@@ -68,26 +64,23 @@ const OSMain = {
                 line.innerText = `>> ${logData.text}`;
                 
                 logsContainer.appendChild(line);
-                logsContainer.scrollTop = logsContainer.scrollHeight; // Auto-scroll inferior
+                logsContainer.scrollTop = logsContainer.scrollHeight;
                 currentLogIndex++;
             }
 
-            // Fin de la secuencia de carga
             if (progress >= 100) {
                 clearInterval(bootInterval);
                 
-                // Transición fluida de salida para ocultar el splash screen
                 setTimeout(() => {
                     bootScreen.style.opacity = '0';
                     bootScreen.style.pointerEvents = 'none';
                     
-                    // Mostrar el contenedor del sistema operativo (Login / Escritorio)
                     container.style.transition = 'opacity 0.6s ease';
                     container.style.opacity = '1';
                     container.style.pointerEvents = 'all';
                 }, 300);
             }
-        }, 40); // Duración total aproximada: 2 segundos
+        }, 40);
     },
 
     /**
@@ -132,9 +125,9 @@ const OSMain = {
             item.addEventListener('click', (e) => {
                 const appName = item.getAttribute('data-app');
                 
-                // CORRECCIÓN CRÍTICA: Validar primero si es el botón de apagado antes de mapear apps
+                // Si presionan Apagar, abrimos el recuadro modal en vez de apagar de inmediato
                 if (appName === 'shutdown' || item.classList.contains('shutdown')) {
-                    this.shutdownSystem();
+                    this.showShutdownModal();
                 } else if (appName) {
                     this.launchApp(appName);
                 }
@@ -142,6 +135,67 @@ const OSMain = {
                 startMenu.classList.add('hidden');
             });
         });
+    },
+
+    /**
+     * Inicialización del Recuadro Modal de Opciones del Sistema
+     */
+    initShutdownModal() {
+        const modal = document.getElementById('shutdown-modal');
+        const closeBtn = document.getElementById('close-shutdown-modal');
+        const btnRestart = document.getElementById('btn-restart');
+        const btnShutdown = document.getElementById('btn-shutdown');
+        const btnSwitchUser = document.getElementById('btn-switch-user');
+
+        if (!modal) return;
+
+        // Cerrar modal al darle a la X
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.hideShutdownModal());
+        }
+
+        // Cerrar modal si hacen click fuera del recuadro
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) this.hideShutdownModal();
+        });
+
+        // Opción 1: Restart (Simula un reinicio del sistema completo refrescando hilos)
+        if (btnRestart) {
+            btnRestart.addEventListener('click', () => {
+                this.hideShutdownModal();
+                window.location.reload();
+            });
+        }
+
+        // Opción 2: Apagar (Llama a la animación cinematográfica)
+        if (btnShutdown) {
+            btnShutdown.addEventListener('click', () => {
+                this.hideShutdownModal();
+                this.shutdownSystem();
+            });
+        }
+
+        // Opción 3: Cambio de usuario (Regresa a la pantalla de Login del módulo users.js)
+        if (btnSwitchUser) {
+            btnSwitchUser.addEventListener('click', () => {
+                this.hideShutdownModal();
+                if (window.OSUsers && typeof window.OSUsers.renderLoginScreen === 'function') {
+                    window.OSUsers.renderLoginScreen();
+                } else {
+                    console.warn("Módulo de usuarios (OSUsers) no disponible.");
+                }
+            });
+        }
+    },
+
+    showShutdownModal() {
+        const modal = document.getElementById('shutdown-modal');
+        if (modal) modal.classList.remove('hidden');
+    },
+
+    hideShutdownModal() {
+        const modal = document.getElementById('shutdown-modal');
+        if (modal) modal.classList.add('hidden');
     },
 
     /**

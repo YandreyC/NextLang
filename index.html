@@ -97,6 +97,21 @@
         </footer>
     </div>
 
+    <div id="shutdown-modal" class="shutdown-modal-overlay hidden">
+        <div class="shutdown-modal-box">
+            <div class="shutdown-modal-header">
+                <h3>System Options</h3>
+                <button id="close-shutdown-modal" class="close-modal-btn">&times;</button>
+            </div>
+            <p class="shutdown-modal-body">What would you like the system to do?</p>
+            <div class="shutdown-modal-actions">
+                <button id="btn-restart" class="action-btn restart-btn">🔄 Restart</button>
+                <button id="btn-shutdown" class="action-btn shutdown-btn">❌ Shut Down</button>
+                <button id="btn-switch-user" class="action-btn switch-btn">👤 Switch User</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/translator.js"></script>
     <script src="js/os-kernel.js"></script>
     <script src="js/main.js"></script> 
@@ -110,21 +125,17 @@
     <script src="js/apps/browser.js"></script>
 
     <script>
-        // Hover traducción para Desktop y Start Menu (dock ya lo hace el kernel)
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.OSTranslator || typeof window.OSTranslator.bindHoverToKey !== 'function') return;
 
-            // Desktop (usan data-app como key del diccionario)
             document.querySelectorAll('.desktop-icon[data-app]').forEach(el => {
                 const key = el.getAttribute('data-app');
                 if (key) window.OSTranslator.bindHoverToKey(el, key);
             });
 
-            // Start-menu
             document.querySelectorAll('#start-menu .menu-item[data-app]').forEach(el => {
                 const key = el.getAttribute('data-app');
-                if (!key) return;
-                window.OSTranslator.bindHoverToKey(el, key);
+                if (key) window.OSTranslator.bindHoverToKey(el, key);
             });
         });
     </script>

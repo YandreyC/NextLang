@@ -23,7 +23,6 @@ body, html {
     display: flex;
     flex-direction: column;
     position: relative;
-    /* Fondo abstracto premium generado por CSS */
     background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 20% 80%, rgba(217, 70, 239, 0.15) 0%, transparent 50%),
                 linear-gradient(160deg, #0f111a 0%, #07080d 100%);
@@ -38,12 +37,11 @@ body, html {
     position: relative;
     padding: 40px;
     display: flex;
-    flex-direction: row; /* Iconos en horizontal superior de forma fluida */
-    justify-content: center; /* Centra los iconos principales */
+    flex-direction: row;
+    justify-content: center;
     gap: 30px;
 }
 
-/* Iconos Flotantes */
 .desktop-icon {
     width: 90px;
     height: 100px;
@@ -98,24 +96,23 @@ body, html {
     position: absolute;
     bottom: 25px;
     left: 50%;
-    transform: translateX(-50%); /* Lo centra perfectamente abajo */
+    transform: translateX(-50%);
     height: 54px;
     min-width: 400px;
     background: rgba(13, 14, 21, 0.6);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 27px; /* Completamente ovalado */
+    border-radius: 27px;
     display: flex;
     align-items: center;
     padding: 0 16px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    z-index: 99999;
+    z-index: 99995;
 }
 
-/* Botón Central de Comando (Antiguo Inicio) */
 #start-button {
     height: 38px;
-    width: 38px; /* Circular */
+    width: 38px;
     background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
     border: none;
     border-radius: 50%;
@@ -133,7 +130,7 @@ body, html {
 }
 
 #start-button span {
-    display: none; /* Ocultamos el texto "Inicio", dejamos solo el icono */
+    display: none;
 }
 
 .start-icon {
@@ -141,7 +138,6 @@ body, html {
     height: 18px;
 }
 
-/* Contenedor de Apps en el Dock */
 #active-apps {
     flex: 1;
     display: flex;
@@ -175,7 +171,6 @@ body, html {
     box-shadow: 0 5px 15px rgba(168, 85, 247, 0.2);
 }
 
-/* Reloj Minimalista */
 #system-tray {
     color: rgba(255, 255, 255, 0.5);
     font-size: 11px;
@@ -192,7 +187,7 @@ body, html {
     position: absolute;
     bottom: 95px;
     left: 50%;
-    transform: translateX(-50%) translateY(0); /* Despliega centrado sobre el Dock */
+    transform: translateX(-50%) translateY(0);
     width: 450px;
     height: 280px;
     background: rgba(15, 17, 26, 0.75);
@@ -203,7 +198,7 @@ body, html {
     display: grid;
     grid-template-columns: 1fr 2fr;
     overflow: hidden;
-    z-index: 99998;
+    z-index: 99990;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
 }
 
@@ -276,10 +271,10 @@ body, html {
     color: #fff;
 }
 
-hr { display: none; } /* Eliminado por estética */
+hr { display: none; }
 
 /* ==========================================================================
-   NUEVO: CAPA VISUAL DE ANIMACIÓN DE INICIO (BOOT SCREEN OVERLAY)
+   CAPA VISUAL DE ANIMACIÓN DE INICIO (BOOT SCREEN OVERLAY)
    ========================================================================== */
 #boot-screen {
     position: fixed;
@@ -317,7 +312,7 @@ hr { display: none; } /* Eliminado por estética */
 
 #boot-logs {
     height: 95px;
-    color: #4ade80; /* Tonalidad verde consola retro cyberpunk */
+    color: #4ade80;
     font-size: 11px;
     overflow: hidden;
     margin-bottom: 15px;
@@ -332,13 +327,8 @@ hr { display: none; } /* Eliminado por estética */
     white-space: nowrap;
 }
 
-.boot-log-line.info { 
-    color: #60a5fa; /* Azul para inicialización de hilos */
-}
-
-.boot-log-line.success { 
-    color: #4ade80; /* Verde brillante para montajes correctos */
-}
+.boot-log-line.info { color: #60a5fa; }
+.boot-log-line.success { color: #4ade80; }
 
 .boot-progress-bar {
     width: 100%;
@@ -356,9 +346,116 @@ hr { display: none; } /* Eliminado por estética */
     transition: width 0.08s linear;
 }
 
-/* Efecto de respiración/pulso del Isotipo */
 @keyframes bootPulse {
     0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(99, 102, 241, 0.2)); }
     50% { transform: scale(1.04); filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.5)); }
     100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(99, 102, 241, 0.2)); }
+}
+
+/* ==========================================================================
+   NUEVO: ESTILOS RECUADRO MODAL DE OPCIONES DE APAGADO
+   ========================================================================== */
+.shutdown-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 6, 10, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000; /* Siempre por encima de todo */
+    transition: opacity 0.3s ease;
+}
+
+.shutdown-modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.shutdown-modal-box {
+    background: rgba(20, 22, 33, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    padding: 24px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.shutdown-modal-overlay.hidden .shutdown-modal-box {
+    transform: scale(0.9);
+}
+
+.shutdown-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.shutdown-modal-header h3 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 22px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal-btn:hover {
+    color: #fff;
+}
+
+.shutdown-modal-body {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.shutdown-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.2s ease;
+}
+
+.restart-btn:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.shutdown-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.switch-btn:hover {
+    background: rgba(217, 70, 239, 0.15);
+    border-color: rgba(217, 70, 239, 0.3);
 }
