@@ -1,6 +1,7 @@
 /**
  * NextLang OS Application: Virtual File System Engine (VFS v3.0)
- * Implementa persistencia real en LocalStorage y metadatos de inodos.
+ * Implements real persistence in LocalStorage and inode metadata.
+
  */
 
 const AppExplorer = {
@@ -94,7 +95,7 @@ const AppExplorer = {
      */
     open() {
         const appId = 'explorer';
-        const title = 'Explorador de Archivos (Persistente VFS)';
+        const title = 'File Explorer';
 
         if (window.OSKernel) {
             window.OSKernel.createWindow(appId, title, this.getTemplate());
@@ -114,9 +115,9 @@ const AppExplorer = {
         return `
             <div class="explorer-wrapper" style="display: flex; flex-direction: column; height: 100%; gap: 12px; color: #fff;">
                 <div class="explorer-toolbar" style="display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
-                    <button id="exp-back-btn" style="${this.getBtnStyle()}">← Volver</button>
+                    <button id="exp-back-btn" style="${this.getBtnStyle()}">← Back</button>
                     <div id="exp-path-box" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-family: monospace; color: rgba(255,255,255,0.6);">/root</div>
-                    <button id="exp-mkdir-btn" style="${this.getBtnStyle('#a855f7')}">+ Nueva Carpeta</button>
+                    <button id="exp-mkdir-btn" style="${this.getBtnStyle('#a855f7')}">+ New Folder</button>
                 </div>
 
                 <div id="exp-grid-view" style="

@@ -17,7 +17,7 @@ const AppSettings = {
      */
     open() {
         const appId = 'settings';
-        const title = 'Configuración del Sistema';
+        const title = 'System Settings';
 
         // Verificar el estado actual del traductor para marcar el interruptor de forma correcta
         const isTranslationEnabled = window.OSTranslator ? window.OSTranslator.enabled : true;
@@ -27,9 +27,9 @@ const AppSettings = {
                 
                 <div class="settings-section" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 14px;">
                     <h3 style="font-size: 14px; color: #a855f7; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <span>🎨</span> Personalización del Entorno
+                        <span>🎨</span> Customizing the Environment
                     </h3>
-                    <p style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 12px;">Selecciona una firma visual para los degradados del escritorio:</p>
+                    <p style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 12px;">Select a visual style for the desktop gradients:</p>
                     <div class="theme-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
         `;
 
@@ -57,9 +57,9 @@ const AppSettings = {
                 <div class="settings-section" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between;">
                     <div>
                         <h3 style="font-size: 14px; color: #6366f1; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
-                            <span>🌐</span> Traductor Inteligente (Hover)
+                            <span>🌐</span> Smart Translator (Hover)
                         </h3>
-                        <p style="font-size: 11px; color: rgba(255,255,255,0.5);">Traducir palabras al pasar el puntero por encima.</p>
+                        <p style="font-size: 11px; color: rgba(255,255,255,0.5);">Translate words when you hover over them.</p>
                     </div>
                     
                     <label class="switch-container" style="position: relative; display: inline-block; width: 46px; height: 24px; cursor: pointer;">

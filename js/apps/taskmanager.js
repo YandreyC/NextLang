@@ -11,7 +11,7 @@ const AppTaskManager = {
      */
     open() {
         const appId = 'taskmanager';
-        const title = 'Monitor del Sistema';
+        const title = 'Task Manager';
 
         if (window.OSKernel) {
             window.OSKernel.createWindow(appId, title, this.getTemplate());
@@ -30,7 +30,7 @@ const AppTaskManager = {
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 12px;">
                         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
-                            <span style="color: rgba(255,255,255,0.7); font-weight: 500;">Procesador (CPU)</span>
+                            <span style="color: rgba(255,255,255,0.7); font-weight: 500;">Processor (CPU)</span>
                             <span id="tm-cpu-txt" style="color: #6366f1; font-family: monospace; font-weight: 600;">0%</span>
                         </div>
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
@@ -39,7 +39,7 @@ const AppTaskManager = {
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 12px;">
                         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
-                            <span style="color: rgba(255,255,255,0.7); font-weight: 500;">Memoria (RAM)</span>
+                            <span style="color: rgba(255,255,255,0.7); font-weight: 500;">Memory (RAM)</span>
                             <span id="tm-ram-txt" style="color: #d946ef; font-family: monospace; font-weight: 600;">0%</span>
                         </div>
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">

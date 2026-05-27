@@ -13,7 +13,7 @@ const AppNotepad = {
     open(initialText = "", fileName = "untitled.txt") {
         this.instanceCount++;
         const appId = `notepad-${this.instanceCount}`;
-        const title = `Notepad.exe - ${fileName}`;
+        const title = `Notepad - ${fileName}`;
 
         // Plantilla interactiva con barra de herramientas superior y área de texto libre
         const htmlContent = `
@@ -28,7 +28,7 @@ const AppNotepad = {
                         background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); color: #818cf8;
                         padding: 3px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s;
                         margin-left: auto;
-                    }">💾 Guardar en VFS</button>
+                    }">💾 Save to VFS</button>
                 </div>
 
                 <textarea class="notepad-textarea" style="
@@ -74,7 +74,7 @@ const AppNotepad = {
             const textContent = textarea.value;
 
             if (name === "") {
-                alert("Por favor, introduce un nombre válido para el archivo.");
+                alert("Please enter a valid file name.");
                 return;
             }
 
@@ -115,7 +115,7 @@ const AppNotepad = {
 
                 // Feedback visual de escritura exitosa en el hilo de la UI
                 const originalText = saveBtn.innerText;
-                saveBtn.innerText = "✓ Guardado en VFS";
+                saveBtn.innerText = "✓ Saved to VFS";
                 saveBtn.style.background = '#27c93f';
                 saveBtn.style.borderColor = '#27c93f';
                 saveBtn.style.color = '#fff';
@@ -128,7 +128,7 @@ const AppNotepad = {
                 }, 1200);
 
             } else {
-                alert("Error del Kernel: El módulo del Explorador de Archivos (VFS) no está cargado.");
+                alert("Kernel Error: The File Explorer (VFS) module is not loaded.");
             }
         };
     }

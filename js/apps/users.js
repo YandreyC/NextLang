@@ -52,14 +52,14 @@ const OSUsers = {
             ">
                 <div id="login-avatar" style="width: 70px; height: 70px; background: linear-gradient(45deg, #6366f1, #a855f7); border-radius: 20px; margin: 0 auto 20px; transition: background 0.3s;"></div>
                 <h2 style="color: #fff; font-size: 18px; margin-bottom: 5px; font-weight: 600;">NextLang OS</h2>
-                <p id="login-msg" style="color: rgba(255,255,255,0.4); font-size: 11px; margin-bottom: 25px;">Introduce las credenciales de acceso</p>
+                <p id="login-msg" style="color: rgba(255,255,255,0.4); font-size: 11px; margin-bottom: 25px;">Enter your login credentials</p>
                 
-                <input type="text" id="login-username" placeholder="Usuario" autocomplete="off" style="
+                <input type="text" id="login-username" placeholder="User" autocomplete="off" style="
                     width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
                     border-radius: 12px; color: #fff; font-size: 13px; margin-bottom: 12px; outline: none; transition: border 0.2s;
                 ">
                 
-                <input type="password" id="login-password" placeholder="Contraseña (123)" style="
+                <input type="password" id="login-password" placeholder="Password" style="
                     width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
                     border-radius: 12px; color: #fff; font-size: 13px; margin-bottom: 20px; outline: none; transition: border 0.2s;
                 ">
@@ -68,7 +68,7 @@ const OSUsers = {
                     width: 100%; padding: 12px; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
                     border: none; border-radius: 12px; color: #fff; font-weight: 600; font-size: 13px; cursor: pointer;
                     box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); transition: all 0.2s;
-                ">Iniciar Sesión</button>
+                ">Sign In</button>
             </div>
         `;
 

@@ -8,7 +8,7 @@ const AppCalculator = {
      */
     open() {
         const appId = 'calculator';
-        const title = 'Calculadora';
+        const title = 'Calculator';
 
         // Estructura HTML de la calculadora con estilos en línea alineados al diseño futurista
         const htmlContent = `

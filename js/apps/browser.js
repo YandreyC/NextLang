@@ -22,14 +22,14 @@ const AppBrowser = {
                     padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
                 ">
                     <span style="font-size: 14px;">🌐</span>
-                    <input type="text" class="br-url-input" placeholder="Busca conceptos, tecnologías o logs en internet..." style="
+                    <input type="text" class="br-url-input" placeholder="Search for concepts, technologies, or logs online..." style="
                         flex: 1; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff;
                         padding: 6px 14px; border-radius: 20px; font-size: 12px; font-family: monospace; outline: none;
                     ">
                     <button class="br-go-btn" style="
                         background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); border: none; color: #fff;
                         padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer;
-                    ">Buscar</button>
+                    ">Search</button>
                 </div>
 
                 <div class="browser-layout" style="
@@ -42,7 +42,7 @@ const AppBrowser = {
                     ">
                         <div class="browser-welcome-msg" style="text-align: center; margin-top: 60px; color: rgba(255,255,255,0.4);">
                             <h3 style="color: #fff; margin-bottom: 8px;">NextBrowser Engine</h3>
-                            <p style="font-size: 12px;">Consulta bases de conocimiento externas sin restricciones de red.</p>
+                            <p style="font-size: 12px;">Access external knowledge bases without network restrictions.</p>
                         </div>
                         <div class="browser-results-container"></div>
                     </div>

@@ -113,7 +113,7 @@ const OSTranslator = {
             document.head.appendChild(style);
         }
 
-        console.log("Módulo OSTranslator acoplado y listo.");
+        console.log("OSTranslator module attached and ready.");
     },
 
     /**
