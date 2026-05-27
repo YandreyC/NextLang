@@ -77,6 +77,11 @@
                 <div class="icon-avatar" style="font-size: 32px; filter: drop-shadow(0 0 5px rgba(16,185,129,0.5));">🦜</div>
                 <span class="icon-label">Speechling</span>
             </div>
+
+            <div class="desktop-icon" data-app="speechling" onclick="if(window.AppYouTubeMusic) window.AppYouTubeMusic.open();">
+                <div class="icon-avatar" style="font-size: 32px; filter: drop-shadow(0 0 5px rgba(16,185,129,0.5));">🎵</div>
+                <span class="icon-label">Music</span>
+            </div>
         </main>
 
         <div id="start-menu" class="hidden">
@@ -134,7 +139,8 @@
     <script src="js/apps/users.js"></script>
     <script src="js/apps/browser.js"></script>
     <script src="js/apps/duolingo-app.js"></script>
-    <script src="js/apps/speechling.js"></script>    
+    <script src="js/apps/speechling.js"></script>   
+    <script src="js/apps/music.js"></script>   
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
