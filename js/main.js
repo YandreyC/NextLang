@@ -1,5 +1,6 @@
 /**
  * NextLang OS Main - Orquestador de Arranque e Interfaz Global
+ * Versión optimizada para persistencia de traducción dinámica
  */
 
 const OSMain = {
@@ -11,12 +12,17 @@ const OSMain = {
         this.initStartMenu();
         this.initDesktopIcons();
         
-        // ¡INTEGRACIÓN!: Inicializar el módulo del traductor y procesar elementos estáticos
+        // INTEGRACIÓN DE TRADUCCIÓN
         if (window.OSTranslator) {
+            // Traducción inicial de toda la UI cargada en el DOM
             window.OSTranslator.init();
+            
+            // Forzamos traducción del Menú de Inicio tras la carga
+            const startMenu = document.getElementById('start-menu');
+            if (startMenu) window.OSTranslator.translateContainerText(startMenu);
         }
 
-        // Disparador del sistema de usuarios y pantalla de bloqueo al arrancar
+        // Disparador del sistema de usuarios
         if (window.OSUsers) {
             window.OSUsers.renderLoginScreen();
         }
@@ -42,7 +48,7 @@ const OSMain = {
     },
 
     /**
-     * Control del Panel Central / Menú de Inicio (Abrir / Cerrar)
+     * Control del Panel Central / Menú de Inicio
      */
     initStartMenu() {
         const startButton = document.getElementById('start-button');
@@ -50,98 +56,70 @@ const OSMain = {
 
         if (!startButton || !startMenu) return;
 
-        // Alternar visibilidad del menú al hacer click en la gema central
         startButton.addEventListener('click', (e) => {
             e.stopPropagation();
             startMenu.classList.toggle('hidden');
         });
 
-        // Cerrar el panel automáticamente si se hace clic en el escritorio vacío
         document.getElementById('desktop').addEventListener('click', () => {
             startMenu.classList.add('hidden');
         });
 
-        // Eventos para los accesos y aplicaciones dentro del panel central
         const menuItems = startMenu.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const appName = item.getAttribute('data-app');
-                
                 if (appName) {
                     this.launchApp(appName);
                 } else if (item.classList.contains('shutdown')) {
                     this.shutdownSystem();
                 }
-                
                 startMenu.classList.add('hidden');
             });
         });
     },
 
     /**
-     * Manejador de iconos del escritorio (Doble clic optimizado)
+     * Manejador de iconos del escritorio
      */
     initDesktopIcons() {
         const icons = document.querySelectorAll('.desktop-icon');
-
         icons.forEach(icon => {
             icon.addEventListener('dblclick', () => {
                 const appName = icon.getAttribute('data-app');
-                if (appName) {
-                    this.launchApp(appName);
-                }
+                if (appName) this.launchApp(appName);
             });
         });
     },
 
     /**
-     * Lanzador de aplicaciones centralizado (Enrutador de Procesos)
-     * Interconecta la interfaz con los scripts de las apps cargados en memoria
-     * @param {string} appName - Nombre clave de la aplicación (data-app)
+     * Lanzador de aplicaciones centralizado
      */
     launchApp(appName) {
-        switch (appName) {
-            case 'notepad':
-                if (window.AppNotepad) window.AppNotepad.open();
-                break;
+        const appMap = {
+            'notepad': window.AppNotepad,
+            'calculator': window.AppCalculator,
+            'explorer': window.AppExplorer,
+            'settings': window.AppSettings,
+            'taskmanager': window.AppTaskManager,
+            'terminal': window.AppTerminal,
+            'browser': window.AppBrowser
+        };
 
-            case 'calculator':
-                if (window.AppCalculator) window.AppCalculator.open();
-                break;
-
-            case 'explorer':
-                if (window.AppExplorer) window.AppExplorer.open();
-                break;
-
-            case 'settings':
-                if (window.AppSettings) window.AppSettings.open();
-                break;
-
-            case 'taskmanager':
-                if (window.AppTaskManager) window.AppTaskManager.open();
-                break;
-
-            case 'terminal':
-                if (window.AppTerminal) window.AppTerminal.open();
-                break;
-
-            case 'browser':
-                if (window.AppBrowser) window.AppBrowser.open();
-                break;
-
-            default:
-                console.warn(`Proceso denegado por el Kernel. Aplicación no registrada: ${appName}`);
+        if (appMap[appName] && typeof appMap[appName].open === 'function') {
+            appMap[appName].open();
+        } else {
+            console.warn(`Kernel: Aplicación ${appName} no encontrada.`);
         }
     },
 
     /**
-     * Simulación cinematográfica de apagado del entorno
+     * Simulación cinematográfica de apagado
      */
     shutdownSystem() {
         const container = document.getElementById('os-container');
         if (!container) return;
 
-        // Animación de desvanecimiento y desenfoque futurista
         container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         container.style.opacity = '0';
         container.style.transform = 'scale(0.97)';
@@ -149,29 +127,9 @@ const OSMain = {
 
         setTimeout(() => {
             document.body.innerHTML = `
-                <div style="
-                    background: #07080d; 
-                    color: rgba(255,255,255,0.7); 
-                    width: 100vw; 
-                    height: 100vh; 
-                    display: flex; 
-                    flex-direction: column; 
-                    justify-content: center; 
-                    align-items: center; 
-                    font-family: monospace;
-                ">
-                    <p style="font-size: 15px; letter-spacing: 1px; margin-bottom: 25px;">NextLang OS environment successfully terminated.</p>
-                    <button onclick="window.location.reload()" style="
-                        background: rgba(255,255,255,0.03); 
-                        color: #fff; 
-                        border: 1px solid rgba(255,255,255,0.1); 
-                        padding: 10px 24px; \
-                        cursor: pointer; 
-                        border-radius: 12px;
-                        font-family: inherit;
-                        font-size: 12px;
-                        transition: all 0.3s;
-                    " onmouseover="this.style.borderColor='#6366f1'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+                <div style="background: #07080d; color: rgba(255,255,255,0.7); width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: monospace;">
+                    <p>NextLang OS environment successfully terminated.</p>
+                    <button onclick="window.location.reload()" style="background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 24px; cursor: pointer; border-radius: 12px; margin-top: 20px;">
                         Reboot System
                     </button>
                 </div>
@@ -180,7 +138,6 @@ const OSMain = {
     }
 };
 
-// Arrancar cuando el DOM esté completamente listo
 document.addEventListener('DOMContentLoaded', () => {
     OSMain.init();
 });
