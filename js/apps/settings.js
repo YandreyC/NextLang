@@ -117,7 +117,7 @@ const AppSettings = {
                 </div>
 
                 <div style="margin-top: auto; text-align: center; font-size: 10px; color: rgba(255,255,255,0.3); font-family: monospace; padding-top: 8px;">
-                    WebOS Core v2.1.0 · Status: Operational
+                    NextLang OS Core v2.1.0 · Status: Operational
                 </div>
             </div>
         `;
