@@ -9,7 +9,21 @@
 </head>
 <body>
 
-    <div id="os-container">
+    <div id="boot-screen">
+        <div class="boot-loader">
+            <div class="boot-logo">
+                <svg viewBox="0 0 24 24"><path fill="#6366f1" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6Z"/></svg>
+            </div>
+            <div class="boot-text-container">
+                <div id="boot-logs"></div>
+                <div class="boot-progress-bar">
+                    <div id="boot-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="os-container" style="opacity: 0; pointer-events: none;">
         
         <main id="desktop">
             <div class="desktop-icon os-hover-translate-ignore" data-app="notepad">
@@ -85,7 +99,8 @@
 
     <script src="js/translator.js"></script>
     <script src="js/os-kernel.js"></script>
-    <script src="js/main.js"></script> <script src="js/apps/notepad.js"></script>
+    <script src="js/main.js"></script> 
+    <script src="js/apps/notepad.js"></script>
     <script src="js/apps/calculator.js"></script>
     <script src="js/apps/explorer.js"></script>
     <script src="js/apps/settings.js"></script>
@@ -109,9 +124,7 @@
             document.querySelectorAll('#start-menu .menu-item[data-app]').forEach(el => {
                 const key = el.getAttribute('data-app');
                 if (!key) return;
-                // Para Shut Down Computer queremos usar la key exacta 'shutdown'
-                const cleanKey = key;
-                window.OSTranslator.bindHoverToKey(el, cleanKey);
+                window.OSTranslator.bindHoverToKey(el, key);
             });
         });
     </script>

@@ -1,6 +1,6 @@
 /**
  * NextLang OS Main - Orquestador de Arranque e Interfaz Global
- * Versión optimizada para persistencia de traducción dinámica
+ * Versión optimizada para persistencia de traducción dinámica con animación de inicio y apagado
  */
 
 const OSMain = {
@@ -26,6 +26,68 @@ const OSMain = {
         if (window.OSUsers) {
             window.OSUsers.renderLoginScreen();
         }
+
+        // ACTIVAR ANIMACIÓN DE INICIO AUTOMÁTICA
+        this.runBootAnimation();
+    },
+
+    /**
+     * Controlador de la Animación de Carga/Inicio (Boot Animation)
+     */
+    runBootAnimation() {
+        const bootScreen = document.getElementById('boot-screen');
+        const container = document.getElementById('os-container');
+        const progressFill = document.getElementById('boot-progress-fill');
+        const logsContainer = document.getElementById('boot-logs');
+
+        if (!bootScreen || !progressFill || !logsContainer) return;
+
+        // Cola de logs del sistema para simular la terminal
+        const bootLogs = [
+            { text: "Loading NextLang WebOS Core Components...", type: "info" },
+            { text: "Initializing Virtual Kernel & VFS System... OK", type: "success" },
+            { text: "Mounting Language and Interface Frameworks...", type: "info" },
+            { text: "Loading User Profile & UI Desktop Workspace...", type: "info" },
+            { text: "Starting Active Modules Sync... READY", type: "success" },
+            { text: "System active. Welcome to NextLang OS.", type: "success" }
+        ];
+
+        let currentLogIndex = 0;
+        let progress = 0;
+
+        const bootInterval = setInterval(() => {
+            progress += 2; // Incremento progresivo de la barra de carga
+            if (progress > 100) progress = 100;
+            progressFill.style.width = `${progress}%`;
+
+            // Control de tiempos de impresión de logs según el porcentaje actual
+            if (currentLogIndex < bootLogs.length && progress >= (currentLogIndex + 1) * (100 / bootLogs.length)) {
+                const logData = bootLogs[currentLogIndex];
+                const line = document.createElement('div');
+                line.className = `boot-log-line ${logData.type}`;
+                line.innerText = `>> ${logData.text}`;
+                
+                logsContainer.appendChild(line);
+                logsContainer.scrollTop = logsContainer.scrollHeight; // Auto-scroll inferior
+                currentLogIndex++;
+            }
+
+            // Fin de la secuencia de carga
+            if (progress >= 100) {
+                clearInterval(bootInterval);
+                
+                // Transición fluida de salida para ocultar el splash screen
+                setTimeout(() => {
+                    bootScreen.style.opacity = '0';
+                    bootScreen.style.pointerEvents = 'none';
+                    
+                    // Mostrar el contenedor del sistema operativo (Login / Escritorio)
+                    container.style.transition = 'opacity 0.6s ease';
+                    container.style.opacity = '1';
+                    container.style.pointerEvents = 'all';
+                }, 300);
+            }
+        }, 40); // Duración total aproximada: 2 segundos
     },
 
     /**
@@ -69,11 +131,14 @@ const OSMain = {
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 const appName = item.getAttribute('data-app');
-                if (appName) {
-                    this.launchApp(appName);
-                } else if (item.classList.contains('shutdown')) {
+                
+                // CORRECCIÓN CRÍTICA: Validar primero si es el botón de apagado antes de mapear apps
+                if (appName === 'shutdown' || item.classList.contains('shutdown')) {
                     this.shutdownSystem();
+                } else if (appName) {
+                    this.launchApp(appName);
                 }
+                
                 startMenu.classList.add('hidden');
             });
         });
@@ -127,9 +192,10 @@ const OSMain = {
 
         setTimeout(() => {
             document.body.innerHTML = `
-                <div style="background: #07080d; color: rgba(255,255,255,0.7); width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: monospace;">
-                    <p>NextLang OS environment successfully terminated.</p>
-                    <button onclick="window.location.reload()" style="background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 24px; cursor: pointer; border-radius: 12px; margin-top: 20px;">
+                <div style="background: #07080d; color: rgba(255,255,255,0.7); width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: monospace; user-select: none;">
+                    <p style="color: #ef4444;">> NextLang OS environment successfully terminated.</p>
+                    <p style="color: rgba(255,255,255,0.25); font-size: 11px; margin-top: 5px;">Memory blocks cleared. Systems halted.</p>
+                    <button onclick="window.location.reload()" style="background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 10px 24px; cursor: pointer; border-radius: 12px; margin-top: 20px; font-family: monospace; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                         Reboot System
                     </button>
                 </div>
