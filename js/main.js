@@ -1,6 +1,6 @@
 /**
  * NextLang OS Main - Orquestador de Arranque e Interfaz Global
- * Versión optimizada para persistencia de traducción dinámica
+ * Versión optimizada para persistencia de traducción dinámica y ejecución nativa
  */
 
 const OSMain = {
@@ -14,12 +14,17 @@ const OSMain = {
         
         // INTEGRACIÓN DE TRADUCCIÓN
         if (window.OSTranslator) {
-            // Traducción inicial de toda la UI cargada en el DOM
+            // Inicializa el contenedor o tooltip y procesa todo el cuerpo inicial
             window.OSTranslator.init();
             
-            // Forzamos traducción del Menú de Inicio tras la carga
-            const startMenu = document.getElementById('start-menu');
-            if (startMenu) window.OSTranslator.translateContainerText(startMenu);
+            // Si tu traductor usa 'run', escanea todo el body de forma segura:
+            if (typeof window.OSTranslator.run === 'function') {
+                window.OSTranslator.run(document.body);
+            } else if (typeof window.OSTranslator.translateContainerText === 'function') {
+                // Alternativa basada en tu versión previa para forzar el menú de inicio
+                const startMenu = document.getElementById('start-menu');
+                if (startMenu) window.OSTranslator.translateContainerText(startMenu);
+            }
         }
 
         // Disparador del sistema de usuarios
@@ -96,6 +101,16 @@ const OSMain = {
      * Lanzador de aplicaciones centralizado
      */
     launchApp(appName) {
+        // INTERCEPCIÓN PORTABLE: Si la aplicación requiere el host anfitrión (ej. Rufus)
+        if (appName === 'rufus') {
+            if (window.OSPortableConnector) {
+                window.OSPortableConnector.launchNativeApp('rufus');
+            } else {
+                console.error("Kernel Error: Módulo portable1.js (OSPortableConnector) no se encuentra cargado.");
+            }
+            return; // Interrumpe el flujo del DOM del navegador para abrir de forma nativa externa
+        }
+
         const appMap = {
             'notepad': window.AppNotepad,
             'calculator': window.AppCalculator,
@@ -108,6 +123,21 @@ const OSMain = {
 
         if (appMap[appName] && typeof appMap[appName].open === 'function') {
             appMap[appName].open();
+
+            // AUTO-TRADUCCIÓN ASÍNCRONA: Espera a que el Kernel monte la interfaz de la app en el DOM
+            if (window.OSTranslator) {
+                setTimeout(() => {
+                    const targetWindows = document.querySelectorAll(`[id^="win-${appName}"]`);
+                    targetWindows.forEach(win => {
+                        // Invoca el método correspondiente según la estructura de tu traductor
+                        if (typeof window.OSTranslator.run === 'function') {
+                            window.OSTranslator.run(win);
+                        } else if (typeof window.OSTranslator.translateContainerText === 'function') {
+                            window.OSTranslator.translateContainerText(win);
+                        }
+                    });
+                }, 60); // Pequeño delay de 60ms para sincronizarse con la inyección del Kernel
+            }
         } else {
             console.warn(`Kernel: Aplicación ${appName} no encontrada.`);
         }

@@ -53,6 +53,13 @@
                 </div>
                 <span class="icon-label os-hover-translate-ignore">Browser</span>
             </div>
+
+            <div class="desktop-icon os-hover-translate-ignore" data-app="rufus">
+                <div class="icon-wrapper os-hover-translate-ignore" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px;">
+                    <svg viewBox="0 0 24 24" class="sys-icon"><path fill="#3b82f6" d="M6,2H18A2,2 0 0 1 20,4V20A2,2 0 0 1 18,22H6A2,2 0 0 1 4,20V4A2,2 0 0 1 6,2M6,4V8H18V4H6M6,20H18V10H6V20M8,12H16V14H8V12M8,16H13V18H8V16Z"/></svg>
+                </div>
+                <span class="icon-label os-hover-translate-ignore">Rufus Host</span>
+            </div>
         </main>
 
         <div id="start-menu" class="hidden">
@@ -68,6 +75,7 @@
                 <div class="menu-item os-hover-translate-ignore" data-app="taskmanager">📊 System Monitor</div>
                 <div class="menu-item os-hover-translate-ignore" data-app="terminal">📟 Command Prompt</div>
                 <div class="menu-item os-hover-translate-ignore" data-app="explorer">📁 File Explorer</div>
+                <div class="menu-item os-hover-translate-ignore" data-app="rufus" style="border-top: 1px solid rgba(255,255,255,0.06); color: #60a5fa;">⚡ Launch Rufus</div>
                 <div class="menu-item os-hover-translate-ignore shutdown" data-app="shutdown">⚠️ Shut Down Computer</div>
             </div>
         </div>
@@ -84,8 +92,10 @@
     </div>
 
     <script src="js/translator.js"></script>
-    <script src="js/os-kernel.js"></script>
-    <script src="js/main.js"></script> <script src="js/apps/notepad.js"></script>
+    <script src="js/portable1.js"></script> <script src="js/os-kernel.js"></script>
+    <script src="js/main.js"></script> 
+    
+    <script src="js/apps/notepad.js"></script>
     <script src="js/apps/calculator.js"></script>
     <script src="js/apps/explorer.js"></script>
     <script src="js/apps/settings.js"></script>
@@ -95,7 +105,6 @@
     <script src="js/apps/browser.js"></script>
 
     <script>
-        // Hover traducción para Desktop y Start Menu (dock ya lo hace el kernel)
         document.addEventListener('DOMContentLoaded', () => {
             if (!window.OSTranslator || typeof window.OSTranslator.bindHoverToKey !== 'function') return;
 
@@ -109,9 +118,7 @@
             document.querySelectorAll('#start-menu .menu-item[data-app]').forEach(el => {
                 const key = el.getAttribute('data-app');
                 if (!key) return;
-                // Para Shut Down Computer queremos usar la key exacta 'shutdown'
-                const cleanKey = key;
-                window.OSTranslator.bindHoverToKey(el, cleanKey);
+                window.OSTranslator.bindHoverToKey(el, key);
             });
         });
     </script>
