@@ -1,6 +1,6 @@
 /**
  * NextLang OS Main - Orquestador de Arranque e Interfaz Global
- * Versión optimizada para persistencia de traducción dinámica con aplicaciones externas
+ * Versión optimizada para persistencia de traducción dinámica con aplicaciones externas y ejecución nativa
  */
 
 const OSMain = {
@@ -12,11 +12,16 @@ const OSMain = {
         this.initStartMenu();
         this.initDesktopIcons();
         this.initShutdownModal();
-        
+
         if (window.OSTranslator) {
             window.OSTranslator.init();
-            const startMenu = document.getElementById('start-menu');
-            if (startMenu) window.OSTranslator.translateContainerText(startMenu);
+
+            if (typeof window.OSTranslator.run === 'function') {
+                window.OSTranslator.run(document.body);
+            } else if (typeof window.OSTranslator.translateContainerText === 'function') {
+                const startMenu = document.getElementById('start-menu');
+                if (startMenu) window.OSTranslator.translateContainerText(startMenu);
+            }
         }
 
         if (window.OSUsers) {
@@ -164,6 +169,16 @@ const OSMain = {
     },
 
     launchApp(appName) {
+        // INTERCEPCIÓN PORTABLE: Si la aplicación requiere el host anfitrión (ej. Rufus)
+        if (appName === 'rufus') {
+            if (window.OSPortableConnector) {
+                window.OSPortableConnector.launchNativeApp('rufus');
+            } else {
+                console.error("Kernel Error: Módulo portable1.js (OSPortableConnector) no se encuentra cargado.");
+            }
+            return; // Interrumpe el flujo del DOM del navegador para abrir de forma nativa externa
+        }
+
         const appMap = {
             'notepad': window.AppNotepad,
             'calculator': window.AppCalculator,
@@ -179,6 +194,21 @@ const OSMain = {
 
         if (appMap[appName] && typeof appMap[appName].open === 'function') {
             appMap[appName].open();
+
+            // AUTO-TRADUCCIÓN ASÍNCRONA: Espera a que el Kernel monte la interfaz de la app en el DOM
+            if (window.OSTranslator) {
+                setTimeout(() => {
+                    const targetWindows = document.querySelectorAll(`[id^="win-${appName}"]`);
+                    targetWindows.forEach(win => {
+                        // Invoca el método correspondiente según la estructura de tu traductor
+                        if (typeof window.OSTranslator.run === 'function') {
+                            window.OSTranslator.run(win);
+                        } else if (typeof window.OSTranslator.translateContainerText === 'function') {
+                            window.OSTranslator.translateContainerText(win);
+                        }
+                    });
+                }, 60); // Pequeño delay de 60ms para sincronizarse con la inyección del Kernel
+            }
         } else {
             console.warn(`Kernel: Aplicación ${appName} no encontrada.`);
         }
